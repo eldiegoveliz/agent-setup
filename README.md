@@ -18,6 +18,8 @@ Skill support depends on your agent. This is a selection from pstack, not its co
 
 ## Maintain the setup
 
+These skills may be outdated. Check the linked sources for updates before relying on them.
+
 I keep upstream checkouts locally in `plugins/`, which Git ignores. To update a third-party skill, I pull its upstream checkout, copy the selected files into `skills/`, review the changes, and update the source revision in [CREDITS.md](CREDITS.md).
 
 My own skills can go directly into `skills/` too.
