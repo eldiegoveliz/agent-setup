@@ -1,71 +1,70 @@
 ---
 name: arena
-description: "Spawn N parallel candidates at the same task, pick a base, graft the strongest parts of the losers into it. Use for /arena, 'arena this', 'throw it in the arena', or when one attempt at a non-trivial artifact would lock in the wrong shape."
+description: "Compare two independent candidates for the same task, choose a base, combine useful improvements, and verify the result. Use for /arena, 'arena this', 'throw it in the arena', or an explicit request to compare alternative solutions."
 disable-model-invocation: true
 ---
 
 # Arena
 
-Fan out N parallel attempts at the same task. Read every candidate end to end. Pick the strongest as the base. Graft the best ideas from the others into it. Verify the synthesized result.
+Produce two candidates for the same task. Compare their results against the user's requirements, choose a base, and incorporate useful improvements from the other candidate. Verify the final result.
 
-## Start
+## Phase A: Define the task
 
-Open a todolist with one entry per phase before launching anything.
+1. State the artifact each candidate should produce and the permitted scope of changes.
+2. Define a few concrete comparison criteria based on the user's requirements. Give both candidates the same task, requirements, and source material.
+3. Use two candidates by default. Add more only when the user requests them.
+4. Give each candidate its own output location. For code changes, use separate worktrees when available or separate working copies. For standalone artifacts, use separate folders in the environment's temporary directory. Do not let candidates write to the same files, branch, or external resource.
 
-1. Frame
-2. Fan out
-3. Cross-judge
-4. Pick
-5. Graft
-6. Verify
+Candidate setup:
 
-## Phase A: Frame
+- Agent role: independent solution candidate.
+- Preferred model: `gpt-5.6-terra` for ordinary tasks; `gpt-5.6-sol` for complex tasks involving multiple components or difficult constraints.
+- Reasoning effort: `medium`.
+- Fast mode: disabled.
+- Use the environment's supported configuration or tool parameters. Report any model, reasoning, or fast-mode setting that cannot be applied or verified. When working directly, use the current session and disclose any difference from the preferred setup.
+- If this model is unavailable, report that before using another model.
+- Modify only the candidate's assigned files within the user's authorized scope. Do not publish or modify external state unless explicitly authorized.
 
-The N candidates will receive the same prompt, so the prompt is the contract.
+## Phase B: Produce candidates
 
-1. State the artifact each candidate is producing.
-2. Derive the rubric. State what success looks like for *this* task, then turn it into 3-6 concrete gradeable criteria. The rubric is the picker's tool in Phase D. Candidates only see the task.
-3. Pick the runners. Use `arena runners` from `~/.cursor/rules/pstack-models.mdc` when present. Otherwise default to one each on `claude-fable-5-1-thinking-max`, `gpt-5.6-sol-max`, `grok-4.6-fast-xhigh`, `claude-opus-5-thinking-xhigh`. Spawn more when the arena covers multiple design directions. Same model N times when the work is generation-bound rather than judgment-sensitive.
-4. Assign output paths. Each candidate writes to its own location (a git worktree where possible, otherwise `/tmp/arena-<slug>/candidate-<n>/`), per the **separate-before-serializing-shared-state** principle skill.
+Launch the candidates in parallel using the environment's available delegation tool. Give each the shared task, its output location, and instructions to return the artifact plus a short explanation of its decisions. Keep candidates from reading each other's results before they finish.
 
-## Phase B: Fan out
+If parallel execution is unavailable, run separate candidate agents sequentially. If delegation is unavailable, produce two alternatives directly and disclose that they are not independent agent attempts.
 
-Spawn all N subagents in one message with `run_in_background: true`, each with the task, the path to the shared grounding, its own output path, and instructions to produce both the artifact and a short rationale.
+If a candidate fails, inspect the cause before retrying. With one usable candidate, report that the comparison is incomplete; do not present it as a winning consensus. With no usable candidates, report the failure rather than selecting a base.
 
-Each rationale names the alternatives the candidate considered and what it rejected.
+## Phase C: Compare and choose
 
-If a candidate fails to produce output, proceed with N-1 and note the dropout in the synthesis record.
+The main agent reads both candidates and compares them against the criteria. Check concrete behavior and relevant test results, not just the candidates' descriptions of their work. When candidates meet the requirements equally well, prefer the simpler result that is easier to maintain.
 
-## Phase C: Cross-judge
+Use a separate judge only when the user requests one or a consequential, unresolved tradeoff would benefit from independent review. Explain that reason before launching it. Wait until candidates finish writing, then give the judge both artifacts and the comparison criteria.
 
-After all Phase B candidates complete, choose one model from the `arena cross-judge pool` in `~/.cursor/rules/pstack-models.mdc` when present. Otherwise use `claude-fable-5-1-thinking-max`, `gpt-5.6-sol-max`, `grok-4.6-fast-xhigh`, `claude-opus-5-thinking-xhigh`. Prefer a different model family from the parent's. Spawn one readonly judge subagent on that model. It sees the rubric and the candidates by path label, scores each criterion, and recommends a base with rationale. It runs in parallel with the parent's reading in Phase D, not with the candidates themselves. Don't spawn the judge while candidates are still writing.
+Optional judge setup:
 
-## Phase D: Pick a base
+- Agent role: independent reviewer of completed candidates.
+- Preferred model: `gpt-5.6-sol`.
+- Reasoning effort: `medium`.
+- Fast mode: disabled.
+- Use the environment's supported configuration or tool parameters. Report any model, reasoning, or fast-mode setting that cannot be applied or verified. When working directly, use the current session and disclose any difference from the preferred setup.
+- If this model is unavailable, report that before using another model.
+- Do not modify files or external state. Use enforced read-only permissions when supported.
 
-Read every candidate end to end before picking.
+Agreement is supporting evidence, not proof of correctness. Disagreement can reflect legitimate tradeoffs, missing evidence, or different interpretations. Inspect the reasons and verify decisive claims before choosing.
 
-Score each candidate against the rubric criterion by criterion, not on holistic feel. Compare against the cross-judge. Agreement on the base confirms the pick. Disagreement means one of you is biased or the rubric was ambiguous. Read both rationales before deciding.
+Different solutions do not by themselves mean the task was underspecified. Clarify or rerun only when a specific missing requirement or failure justifies it.
 
-Pick the base on which candidate a future maintainer can extend most easily without breaking invariants. Prefer the cleaner boundary or smaller API when two feel tied, per the Laziness Protocol.
+## Phase D: Combine useful improvements
 
-Record the pick and the reason in a short synthesis note alongside the base artifact, including the cross-judge's verdict.
+Choose one candidate as the base. Incorporate improvements from the other only when they help meet the requirements without unnecessary complexity. Keeping the base unchanged is valid when nothing else improves it.
 
-## Phase E: Graft
+Record the choice and any incorporated or rejected ideas in a short note. Include the judge's reasoning if a judge was used.
 
-Walk each losing candidate once more and identify what is worth porting into the base. The signal is usually one or two things per candidate, not most of it.
+## Phase E: Verify
 
-Fold each graft in by hand, per the **redesign-from-first-principles** principle skill. Don't paste mechanically. The result has to remain coherent under one mental model.
+Verify the final artifact against the original requirements using appropriate tests, direct inspection, or an actual feature run. Candidate agreement does not replace verification. Recheck affected behavior after combining changes.
 
-Record what was grafted, from which candidate, and what was rejected and why.
+If verification fails, diagnose the actual cause. It may be an implementation bug, a problem introduced while combining candidates, a mistaken requirement, or a faulty check. Fix the cause and repeat the affected verification. Do not restart the entire comparison without a concrete reason.
 
-When N candidates converge on the same shape, that is a strong agreement signal. Note the convergence in the record and ship the consensus shape. No graft is needed. When N candidates wildly diverge, Phase A was under-specified. Reframe and re-run rather than averaging the divergence.
+## Output
 
-## Phase F: Verify
-
-The synthesized artifact has to hold up under the same scrutiny as any other output, per the **prove-it-works** principle skill.
-
-If verification surfaces a problem the arena did not catch, either Phase A was wrong (re-frame and re-run) or one candidate caught it and you missed the graft (go back to Phase E). Don't paper over.
-
-## Outputs
-
-One synthesized artifact. One short synthesis note alongside, naming the base, the grafts (with source candidate), the rejections, the dropouts if any, and the verification result.
+Return the final artifact and a short comparison note explaining the choice, incorporated improvements, verification results, and any remaining limitations. Keep the note in the response unless the user requests a file or the project requires one.

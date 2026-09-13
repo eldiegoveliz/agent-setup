@@ -1,6 +1,6 @@
 ---
 name: how
-description: "Use for \"how does X work\", code walkthroughs before changing something, and placement / ownership / layering questions (\"where should this live\", \"which package owns this\", \"is this the right layer\"). Explains subsystem architecture, runtime flow, onboarding mental models. Use why for motivation."
+description: "Use for \"how does X work\", code walkthroughs before changing something, and placement / ownership / layering questions (\"where should this live\", \"which package owns this\", \"is this the right layer\"). Explains subsystem architecture, runtime flow, onboarding mental models."
 disable-model-invocation: true
 ---
 
@@ -19,31 +19,43 @@ When in doubt, take the simple path.
 
 ## Step 2a. Explore (complex questions only)
 
-Decompose the question into 2 to 4 exploration angles, each a distinct slice of the subsystem. Spawn all explorers in a single message:
+Decompose the question into 2 to 4 exploration angles, each a distinct slice of the subsystem. Launch the explorers in parallel using the environment's available delegation tool. If delegation is unavailable, explore the angles directly using the same prompts:
 
-- `subagent_type`: `generalPurpose`
-- `model`: your configured how-explorer model (default `grok-4.6-fast-xhigh`)
-- `readonly`: `true`
+- Agent role: general-purpose code explorer.
+- Preferred model: `gpt-5.6-terra`.
+- Reasoning effort: `medium`.
+- Fast mode: disabled.
+- Use the environment's supported configuration or tool parameters. Report any model, reasoning, or fast-mode setting that cannot be applied or verified. When working directly, use the current session and disclose any difference from the preferred setup.
+- If this model is unavailable, report that before using another model.
+- Do not modify files or external state. Use enforced read-only permissions when supported.
 
 Each explorer gets the prompt in `references/explorer-prompt.md` with its angle filled in. Then go to Step 3.
 
 ## Step 2b. Direct Explain (simple questions)
 
-Spawn one Task subagent that explores and explains in one pass:
+Delegate exploration and explanation to one subagent using the environment's available delegation tool. If delegation is unavailable, perform the work directly:
 
-- `subagent_type`: `generalPurpose`
-- `model`: your configured how-explainer model (default `claude-fable-5-1-thinking-max`)
-- `readonly`: `true`
+- Agent role: code explorer and explainer.
+- Preferred model: `gpt-5.6-terra`.
+- Reasoning effort: `medium`.
+- Fast mode: disabled.
+- Use the environment's supported configuration or tool parameters. Report any model, reasoning, or fast-mode setting that cannot be applied or verified. When working directly, use the current session and disclose any difference from the preferred setup.
+- If this model is unavailable, report that before using another model.
+- Do not modify files or external state. Use enforced read-only permissions when supported.
 
 Build its prompt from `references/explainer-prompt.md` without the explorer-findings section. Go to Step 4.
 
 ## Step 3. Synthesize (complex questions only)
 
-Once all explorers have returned, spawn one Task subagent to synthesize their findings into one explanation:
+Once exploration is complete, delegate synthesis to one subagent using the environment's available delegation tool. If delegation is unavailable, synthesize the findings directly:
 
-- `subagent_type`: `generalPurpose`
-- `model`: your configured how-explainer model (default `claude-fable-5-1-thinking-max`)
-- `readonly`: `true`
+- Agent role: synthesizer for complex explanations.
+- Preferred model: `gpt-5.6-sol`.
+- Reasoning effort: `medium`.
+- Fast mode: disabled.
+- Use the environment's supported configuration or tool parameters. Report any model, reasoning, or fast-mode setting that cannot be applied or verified. When working directly, use the current session and disclose any difference from the preferred setup.
+- If this model is unavailable, report that before using another model.
+- Do not modify files or external state. Use enforced read-only permissions when supported.
 
 Build its prompt from `references/explainer-prompt.md` with every explorer's findings filled in.
 

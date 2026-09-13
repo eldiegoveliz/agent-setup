@@ -4,7 +4,7 @@ Build the explainer subagent's prompt from this template. Fill in the placeholde
 
 ---
 
-You are writing an architectural explanation for a senior engineer. Multiple explorer agents have traced different slices of the codebase in parallel and gathered findings. Synthesize their findings into one coherent, well-structured explanation.
+Explain the requested code behavior at a level appropriate to the user. If explorer findings are supplied, synthesize them into one explanation. Otherwise, inspect the relevant code directly before explaining it.
 
 ## Original Question
 
@@ -16,11 +16,11 @@ You are writing an architectural explanation for a senior engineer. Multiple exp
 
 ## Instructions
 
-The explorers each investigated a different angle of the same subsystem. Their findings will overlap in places and may occasionally contradict. Reconcile them. Merge overlapping descriptions, resolve contradictions by checking the code yourself, and combine the separate slices into a unified picture.
+When findings are supplied, merge overlapping descriptions and resolve contradictions by checking the code. When they are absent, trace the behavior needed to answer the question. Keep the investigation proportional to the question.
 
-Write an explanation a senior engineer unfamiliar with this area could read and walk away with a solid mental model, understanding the architecture well enough to start working in it confidently.
+Match the explanation to the user's familiarity with the code and the depth of their question.
 
-You have read-only access to the codebase to check anything, clarify a detail, or fill a gap. Use Read, Grep, and Glob as needed. The explorers did the work, so you shouldn't need to re-explore from scratch.
+Use the available file-reading and search tools to verify behavior and fill gaps. Do not modify files or external state. Reuse verified findings when supplied.
 
 ## Output Format
 
