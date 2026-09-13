@@ -1,0 +1,9 @@
+# Local upstream checkouts used to update copied skills.
+/plugins/
+
+# Local environment and editor files.
+.env
+.env.*
+.DS_Store
+*.swp
+*.swo
