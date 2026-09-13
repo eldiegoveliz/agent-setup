@@ -14,7 +14,7 @@ git clone https://github.com/eldiegoveliz/agent-setup.git ~/.agents
 If you already have a setup, clone this repository elsewhere and copy the skill folders you want into your existing `~/.agents/skills/`.
 
 The actual skill files are included in `skills/`. No submodules, symlinks, or additional downloads are needed to get these files.
-Skill support depends on your agent. This is a selection from pstack, not its complete plugin. Some skills refer to helpers that are not included, such as `how`, `why`, and `arena`.
+Skill support depends on your agent. This selection includes `how`, `why`, and `arena`, their reference files, and the supporting principle skills. The upstream instructions include Cursor-specific model names, subagent settings, and tool assumptions that may need adaptation for your agent. This is not the complete pstack plugin. Optional workflows mentioned in the text, such as `show-me-your-work`, are not included.
 
 ## Maintain the setup
 
