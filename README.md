@@ -1,7 +1,7 @@
 # agent-setup
 
 My personal agent setup, with skills I write and work I adopt from others.
-Currently, it contains selected skills from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack).
+Currently, it contains selected skills from Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack), including adaptations for my personal workflow.
 
 ## Use the skills
 
