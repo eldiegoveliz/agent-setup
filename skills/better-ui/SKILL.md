@@ -1,6 +1,7 @@
 ---
 name: better-ui
-description: Polishes and improves the UI in your project. Covers concentric border radius, optical alignment, surface depth, contextual icons, hit areas and more.
+description: Refine existing UI surfaces, nested radii, optical alignment, icons, and interaction motion while preserving the project's design system. Not for full redesigns or comprehensive accessibility reviews.
+disable-model-invocation: true
 ---
 
 # UI polish
@@ -13,7 +14,7 @@ Keep the project's component library, tokens and density, and match its motion l
 
 Every duration, curve, scale and blur below is a specific value, not a range to approximate. `cubic-bezier(0.2, 0, 0, 1)` is not `cubic-bezier(0.4, 0, 0.2, 1)`, and `0.96` is not `0.95`. Use what is written.
 
-Text wrapping, font rendering, tabular numbers and text spacing belong to `better-typography`. Hit areas, focus, keyboard support, ARIA and reduced motion belong to `better-accessibility`. Grouping, section spacing, breakpoints and spatial RTL belong to `better-layout`.
+This skill covers visual polish, not a comprehensive typography, accessibility, or layout review. Preserve the project's text styling, grouping, breakpoints, hit areas, focus indicators, keyboard support, and ARIA semantics. Respect reduced motion in every animation recipe. Do not claim those domains were audited merely because the UI-polish checks passed.
 
 ## Concentric border radius
 

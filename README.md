@@ -16,6 +16,14 @@ If you already have a setup, clone this repository elsewhere and copy the skill 
 The actual skill files are included in `skills/`. No submodules, symlinks, or additional downloads are needed to get these files.
 Skill support depends on your agent. This selection includes `how` and `arena`, their reference files, and the supporting principle skills. The adapted workflows prefer Terra and Sol at medium reasoning with fast mode disabled. Model access, delegation, and other tools depend on your environment. Settings that cannot be applied or verified should be reported. This is not the complete pstack plugin. Optional workflows mentioned in the text, such as `show-me-your-work`, are not included.
 
+## Skill selection
+
+`frontend-design` is the general frontend design skill. `cinematic-scroll` applies only to explicitly cinematic experiences, while `zero-jank-scroll` owns scroll architecture, correctness, and performance.
+
+`better-ui` and `scroll-craft` are manual specialists. In Pi, invoke them with `/skill:better-ui` or `/skill:scroll-craft`. Scrollcraft uses its own standalone HTML/CSS/JS engine and production workflow; it is not the default for app UI. The other skills marked `disable-model-invocation: true` also stay out of automatic selection.
+
+`hf-cli` applies to Hugging Face resources, not general ML or cloud-storage questions. `libraries-dev` applies to requests for its React effect packages. `project-dashboard` supports project handoffs from an existing `STATUS.md` without replacing verification against the current code.
+
 ## Maintain the setup
 
 These skills may be outdated. Check the linked sources for updates before relying on them.

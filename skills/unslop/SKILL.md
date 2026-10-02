@@ -1,6 +1,6 @@
 ---
 name: unslop
-description: Cut AI tells from any writing. Must always apply.
+description: Edit prose to remove AI writing patterns while preserving meaning and tone. Use when explicitly invoked or required by another writing skill.
 disable-model-invocation: true
 ---
 

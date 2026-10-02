@@ -1,15 +1,15 @@
 ---
 name: project-dashboard
-description: Carry context across threads with one status file. Use when you start a thread, resume work, or want to skip re-reading the codebase.
+description: Resume project work from an existing root STATUS.md, or update that file when explicitly requested. Use for project handoffs and continuation, not every new conversation.
 ---
 
 Save tokens across threads with one file.
 
-To start work, read `STATUS.md` in the repo root first.
-State where you think you are in two lines.
-Then ask the human one question: what is wrong or missing in that guess.
+When resuming project work, read `STATUS.md` in the repo root if it exists.
+State your understanding briefly. Ask a question only when a missing or conflicting fact prevents progress.
+If there is no status file, proceed with normal, scoped investigation. Do not create one unless asked.
 
-Do work from the answer. Do not rescan the codebase to rebuild context.
+Treat the status file as a handoff, not proof of the current state. Verify relevant facts against the code and available evidence. Reuse its context to avoid unnecessary full-codebase scans, but inspect whatever the task requires.
 
 To save work, rewrite `STATUS.md` only when the human asks or runs this skill. Write these four sections:
 

@@ -1,6 +1,6 @@
 ---
 name: libraries-dev
-description: Use the Libraries.dev UI effect libraries correctly and find where they fit in a project. Covers Border beam (border-beam), Thinking orbs (thinking-orbs), Gooey (liquid-gooey), Voice (voice-glow), Bot avatars (bot-avatars), Liquid metal (metal-fx) and Image (img-fx). Use when adding an AI thinking or loading state, a glowing or animated border around an input or card, a voice or microphone visualizer, an animated bot or agent avatar, a liquid metal button or badge, an image generation placeholder or reveal, a gooey blob or liquid menu, or when the user mentions libraries.dev or any of these packages. Also "review my project for libraries.dev", "where could I use these effects", and the commands libraries reveal, libraries review, libraries apply.
+description: Integrate or evaluate the seven Libraries.dev React effect packages (border-beam, thinking-orbs, liquid-gooey, voice-glow, bot-avatars, metal-fx, and img-fx). Use when the user names Libraries.dev, one of its packages, explicitly requests those library effects, or invokes libraries reveal, libraries review, or libraries apply. Not for generic loading-state or animation work.
 ---
 
 # Libraries.dev

@@ -1,6 +1,6 @@
 ---
 name: cinematic-scroll
-description: Design and build cinematic websites, interactive portfolios, product stories, and real-time 3D experiences with subject-specific art direction and scroll choreography. Use for new builds, redesigns, motion improvements, scroll audits, or storyboards in standalone HTML and existing apps; includes responsive, reduced-motion, and static fallbacks. Not for ordinary dashboards or unrelated animation.
+description: Design and build explicitly cinematic websites, scroll-driven product stories, interactive portfolios, and real-time 3D web experiences. Use when the request calls for cinematic art direction, scroll-story choreography, a cinematic storyboard, or repairs to those experiences in standalone HTML or existing apps. Includes responsive, reduced-motion, and static fallbacks. Not for generic redesigns, ordinary dashboards, routine UI animation, or scroll-performance-only repairs.
 metadata:
   version: 2.7.6
   openclaw:
